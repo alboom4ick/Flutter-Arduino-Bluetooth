@@ -7,7 +7,6 @@ import 'dart:typed_data';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_speech/flutter_speech.dart';
 
-
 class VoiceButtonComponent extends StatefulWidget {
   final BluetoothConnection? connection;
   final int clientID;
@@ -18,7 +17,7 @@ class VoiceButtonComponent extends StatefulWidget {
     this.languageSelected,
     required this.clientID,
   }) : super(key: key);
-  _VoiceButtonState createState() => _VoiceButtonState();  
+  _VoiceButtonState createState() => _VoiceButtonState();
 }
 
 class Language {
@@ -41,12 +40,11 @@ class _Message {
   _Message(this.whom, this.text);
 }
 
-
 class _VoiceButtonState extends State<VoiceButtonComponent> {
   bool buttonClicado = false;
   final TextEditingController textEditingController = TextEditingController();
   List<_Message> messages = <_Message>[];
-  
+
   late SpeechRecognition _speech;
   bool _speechRecognitionAvailable = false;
   bool _isListening = false;
@@ -65,7 +63,15 @@ class _VoiceButtonState extends State<VoiceButtonComponent> {
     _speech.setRecognitionResultHandler(onRecognitionResult);
     _speech.setRecognitionCompleteHandler(onRecognitionComplete);
     _speech.setErrorHandler(errorHandler);
-    _speech.activate(languages.firstWhere((l) => l.code == (widget.languageSelected == null ? 'pt_BR' : widget.languageSelected!)).code).then((res) {
+    _speech
+        .activate(languages
+            .firstWhere((l) =>
+                l.code ==
+                (widget.languageSelected == null
+                    ? 'pt_BR'
+                    : widget.languageSelected!))
+            .code)
+        .then((res) {
       setState(() => _speechRecognitionAvailable = res);
     });
   }
@@ -89,9 +95,15 @@ class _VoiceButtonState extends State<VoiceButtonComponent> {
     }
   }
 
-
-  void start() => _speech.activate(
-    languages.firstWhere((l) => l.code == (widget.languageSelected == null ? 'pt_BR' : widget.languageSelected!)).code).then((_) {
+  void start() => _speech
+          .activate(languages
+              .firstWhere((l) =>
+                  l.code ==
+                  (widget.languageSelected == null
+                      ? 'pt_BR'
+                      : widget.languageSelected!))
+              .code)
+          .then((_) {
         return _speech.listen().then((result) {
           print('_MyAppState.start => result $result');
           setState(() {
@@ -110,7 +122,6 @@ class _VoiceButtonState extends State<VoiceButtonComponent> {
   void onSpeechAvailability(bool result) =>
       setState(() => _speechRecognitionAvailable = result);
 
-
   void onRecognitionStarted() {
     setState(() => _isListening = true);
   }
@@ -128,24 +139,16 @@ class _VoiceButtonState extends State<VoiceButtonComponent> {
   void errorHandler() => activateSpeechRecognizer();
 
   Widget build(BuildContext context) {
-  return (ElevatedButton(          
-          onPressed:  _speechRecognitionAvailable && !_isListening
-                        ? () => start()
-                        : null,                        
-          child: Icon(
-            _isListening
-                        ? Icons.settings_voice
-                        : Icons.settings_voice_outlined,                        
-          ),
-          style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),                          
-                          primary: _isListening
-                              ? Color.fromRGBO(255, 255, 0, 1)
-                              : Colors.black),
-          
-        ));
+    return (ElevatedButton(
+      onPressed:
+          _speechRecognitionAvailable && !_isListening ? () => start() : null,
+      child: Icon(
+        _isListening ? Icons.settings_voice : Icons.settings_voice_outlined,
+      ),
+      style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
+          backgroundColor:
+              _isListening ? Color.fromRGBO(255, 255, 0, 1) : Colors.black),
+    ));
   }
-
-  
-
 }

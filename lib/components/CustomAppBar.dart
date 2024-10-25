@@ -65,9 +65,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           : Icons.bluetooth_disabled),
                       style: ElevatedButton.styleFrom(
                           shape: CircleBorder(),
-                          primary: StatusConnectionProvider.device != null
-                              ? Color.fromRGBO(15, 171, 118, 1)
-                              : Colors.black),
+                          backgroundColor:
+                              StatusConnectionProvider.device != null
+                                  ? Color.fromRGBO(15, 171, 118, 1)
+                                  : Colors.black),
                     )
                   : SizedBox.shrink());
             }),

@@ -44,7 +44,7 @@ class _ButtonState extends State<ButtonDoubleComponent> {
     return (Container(
         height: 60,
         width: 90,
-        child: FlatButton(
+        child: ElevatedButton(
           onPressed: () {
             _sendMessage(buttonClicado ? widget.comandOn! : widget.comandOff!);
             _changeButtonColor();
@@ -53,10 +53,15 @@ class _ButtonState extends State<ButtonDoubleComponent> {
             widget.buttonName!,
             style: TextStyle(color: Colors.white),
           ),
-          color: buttonClicado
-              ? Color.fromRGBO(237, 46, 39, 1)
-              : Color.fromRGBO(0, 0, 0, 1),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(
+                buttonClicado
+                    ? Color.fromRGBO(237, 46, 39, 1)
+                    : Color.fromRGBO(0, 0, 0, 1),
+              ),
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+              )),
         )));
   }
 
